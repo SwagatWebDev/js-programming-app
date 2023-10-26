@@ -5,22 +5,22 @@ personObj.age = 30;
 personObj.job = 'Engineer'
 
 // Access Objects
-const person = {name: 'John', age: 30, city: 'Bangalore'};
-console.log(person.name);
-console.log(person['name']);
+const personData = {name: 'John', age: 30, city: 'Bangalore'};
+console.log(personData.name);
+console.log(personData['name']);
 
 // keys
-const keys = Object.keys(person);
+const keys = Object.keys(personData);
 console.log(keys);
 
 // values
-const values= Object.values(person);
+const values= Object.values(personData);
 console.log(values);
 
 //  entries
-console.log(Object.entries(person));
+console.log(Object.entries(personData));
 
-Custom
+//  Custom Functions
 function Person(name, age){
     this.name = name;
     this.age = age;
@@ -41,7 +41,7 @@ console.log(colors);
 colors.push('White');
 console.log(colors);
 
-Object Iteration
+// Object Iteration
 const person = {name: 'john', age: 30};
 for (let key in person){
     console.log(key, ':', person[key]);
@@ -74,19 +74,19 @@ const slicedFruits = fruits.slice(1, 4);
 console.log(slicedFruits);
 
 // splice()
-const fruits = ['Apple', 'Grapes', 'Orange', 'Guava'];
+const fruitsArray = ['Apple', 'Grapes', 'Orange', 'Guava'];
 
 // to add elements at a specific index
-fruits.splice(2, , 'kiwi', 'date');
-console.log(fruits);
+fruitsArray.splice(2, 0, 'kiwi', 'date');
+console.log(fruitsArray);
 
 // to remove elements
-fruits.splice(1, 2);
-console.log(fruits);
+fruitsArray.splice(1, 2);
+console.log(fruitsArray);
 
 // To replace elements at a specified index
-fruits.splice(2, 1, 'strawberry');
-console.log(fruits);
+fruitsArray.splice(2, 1, 'strawberry');
+console.log(fruitsArray);
 
 
 
