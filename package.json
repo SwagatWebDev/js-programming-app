@@ -1,0 +1,24 @@
+{
+  "type": "module",
+  "name": "js-programming-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwagatWebDev/js-programming-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SwagatWebDev/js-programming-app/issues"
+  },
+  "homepage": "https://github.com/SwagatWebDev/js-programming-app#readme",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script.js"
+  }
+}
