@@ -1,4 +1,4 @@
-//  custom map
+// higher-order-equivalent-map-function
 const numbers = [1, 2, 3, 4, 5];
 function myMap(arr, transformation){
     const result = [];
