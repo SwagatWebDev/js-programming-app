@@ -1,14 +1,13 @@
-// Simulate fetching user data
 function fetchUserData() {
+    // Simulate fetching user data
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            const user = { name: "John", age: 30 };
+            const user = { name: "John", age: 10 };
             resolve(user);
         }, 2000); // Simulating a delay of 2 seconds
     });
 }
-// Simulate updating user profile
-function updateUserProfile(user) {
+function updateUserProfile(user) { // Simulate updating user profile
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             user.age += 1;
@@ -16,10 +15,12 @@ function updateUserProfile(user) {
         }, 1500); // Simulating a delay of 1.5 seconds
     });
 }
-// Usage of Promises to fetch and update user data
+// Usage of Promises to fetch and update user data with error handling
 fetchUserData()
     .then((user) => {
-        console.log("User data fetched:", user);
+        if (user.age < 18) {
+            throw new Error("User is underage.");
+        }
         return updateUserProfile(user);
     })
     .then((updatedUser) => {
