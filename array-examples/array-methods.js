@@ -31,7 +31,10 @@ const myArray = [1, 2, 3];
 const sum = myArray + 10;
 console.log(package com.fmr.intelea.batch.service;
 
-private static final String RESTRICTION = "restriction";
+//fillpackage com.fmr.intelea.batch.service;
+
+
+    private static final String RESTRICTION = "restriction";
     private static final String APPROVED = "approved";
 
     public String determineGuideline(List<LLMOpenSourceTechnology> technologies) {
@@ -44,44 +47,47 @@ private static final String RESTRICTION = "restriction";
     }
 
     private String determineWorstCaseGuideline(List<LLMOpenSourceTechnology> technologies, String field) {
-        return technologies.stream()
-                .flatMap(tech -> Stream.of(
-                        getFieldValue(tech, field),
-                        getFieldValuesFromList(tech.getOpensourceLicenses(), field),
-                        getFieldValuesFromList(tech.getPredecessorTechnology(), field),
-                        getFieldValuesFromList(tech.getSuccessorTechnology(), field)
-                ).flatMap(Stream::of))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .distinct()
-                .reduce(this::worstCase)
-                .orElse(null);
-    }
+        String worstCaseValue = null;
 
-    private Optional<String> getFieldValue(Object obj, String field) {
-        try {
-            Field f = obj.getClass().getDeclaredField(field);
-            f.setAccessible(true);
-            return Optional.ofNullable((String) f.get(obj));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return Optional.empty();
+        for (LLMOpenSourceTechnology tech : technologies) {
+            worstCaseValue = compareValues(worstCaseValue, getFieldValue(tech, field));
+            worstCaseValue = compareListValues(worstCaseValue, tech.getOpensourceLicenses(), field);
+            worstCaseValue = compareListValues(worstCaseValue, tech.getPredecessorTechnology(), field);
+            worstCaseValue = compareListValues(worstCaseValue, tech.getSuccessorTechnology(), field);
         }
+
+        return worstCaseValue;
     }
 
-    private Stream<Optional<String>> getFieldValuesFromList(List<LicensePredecessorSuccessorCategory> list, String field) {
-        if (list == null) return Stream.empty();
-        return list.stream().map(item -> getFieldValue(item, field));
+    private String compareListValues(String currentWorstCase, List<LicensePredecessorSuccessorCategory> list, String field) {
+        if (list != null) {
+            for (LicensePredecessorSuccessorCategory item : list) {
+                currentWorstCase = compareValues(currentWorstCase, getFieldValue(item, field));
+            }
+        }
+        return currentWorstCase;
     }
 
-    private String worstCase(String guideline1, String guideline2) {
-        if (RESTRICTION.equals(guideline1) || RESTRICTION.equals(guideline2)) {
+    private String compareValues(String value1, String value2) {
+        if (RESTRICTION.equals(value1) || RESTRICTION.equals(value2)) {
             return RESTRICTION;
+        } else if (APPROVED.equals(value1) || APPROVED.equals(value2)) {
+            return APPROVED;
         }
-        return APPROVED;
+        return null;
+    }
+
+    private String getFieldValue(Object obj, String field) {
+        try {
+            java.lang.reflect.Field f = obj.getClass().getDeclaredField(field);
+            f.setAccessible(true);
+            return (String) f.get(obj);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
     }
 }
 
-//fill
 const num = [1, 2, 3, 4, 5];
 num.fill(0, 1, 4);
 console.log(num);
