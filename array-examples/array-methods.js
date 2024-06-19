@@ -29,7 +29,57 @@ console.log(primitiveValue === colors);
 
 const myArray = [1, 2, 3];
 const sum = myArray + 10;
-console.log(sum);
+console.log(package com.fmr.intelea.batch.service;
+
+private static final String RESTRICTION = "restriction";
+    private static final String APPROVED = "approved";
+
+    public String determineGuideline(List<LLMOpenSourceTechnology> technologies) {
+        String initRec = determineWorstCaseGuideline(technologies, "intRecipient");
+        String initPrompt = determineWorstCaseGuideline(technologies, "intPrompt");
+        String extRec = determineWorstCaseGuideline(technologies, "extRecipient");
+        String extPrompt = determineWorstCaseGuideline(technologies, "extPrompt");
+
+        return String.format("initRec: %s, initPrompt: %s, extRec: %s, extPrompt: %s", initRec, initPrompt, extRec, extPrompt);
+    }
+
+    private String determineWorstCaseGuideline(List<LLMOpenSourceTechnology> technologies, String field) {
+        return technologies.stream()
+                .flatMap(tech -> Stream.of(
+                        getFieldValue(tech, field),
+                        getFieldValuesFromList(tech.getOpensourceLicenses(), field),
+                        getFieldValuesFromList(tech.getPredecessorTechnology(), field),
+                        getFieldValuesFromList(tech.getSuccessorTechnology(), field)
+                ).flatMap(Stream::of))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .distinct()
+                .reduce(this::worstCase)
+                .orElse(null);
+    }
+
+    private Optional<String> getFieldValue(Object obj, String field) {
+        try {
+            Field f = obj.getClass().getDeclaredField(field);
+            f.setAccessible(true);
+            return Optional.ofNullable((String) f.get(obj));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    private Stream<Optional<String>> getFieldValuesFromList(List<LicensePredecessorSuccessorCategory> list, String field) {
+        if (list == null) return Stream.empty();
+        return list.stream().map(item -> getFieldValue(item, field));
+    }
+
+    private String worstCase(String guideline1, String guideline2) {
+        if (RESTRICTION.equals(guideline1) || RESTRICTION.equals(guideline2)) {
+            return RESTRICTION;
+        }
+        return APPROVED;
+    }
+}
 
 //fill
 const num = [1, 2, 3, 4, 5];
