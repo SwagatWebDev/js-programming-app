@@ -25,52 +25,6 @@ const colors = ['red', 'green', 'blue'];
 const primitiveValue = colors.valueOf();
 console.log(primitiveValue);
 
-private static String getWorstCaseValue(LLMOpenSourceTechnology tech, String fieldName) {
-        // Collect values directly from the technology object
-        Stream<String> currentTechnologyValues = Stream.of(
-                tech.intPrompt,
-                tech.extPrompt,
-                tech.intRecipient,
-                tech.extRecipient
-        ).filter(Objects::nonNull);
-
-        // Collect values from open source licenses
-        Stream<String> openSourceLicenseValues = tech.openSourceLicense.stream()
-                .flatMap(osl -> osl.licenses.stream())
-                .flatMap(license -> Stream.of(
-                        license.intPrompt,
-                        license.extPrompt,
-                        license.intRecipient,
-                        license.extRecipient
-                ))
-                .filter(Objects::nonNull);
-
-        // Collect values from predecessor technology and their licenses
-        Stream<String> predecessorTechnologyValues = tech.predecessorTechnology.stream()
-                .flatMap(predecessor -> Stream.concat(
-                        Stream.of(
-                                predecessor.intPrompt,
-                                predecessor.extPrompt,
-                                predecessor.intRecipient,
-                                predecessor.extRecipient
-                        ).filter(Objects::nonNull),
-                        predecessor.licenses.stream()
-                                .filter(license -> license.isComplianceGeneration || license.isComplianceModification)
-                                .flatMap(license -> Stream.of(
-                                        license.intPrompt,
-                                        license.extPrompt,
-                                        license.intRecipient,
-                                        license.extRecipient
-                                )).filter(Objects::nonNull)
-                ));
-
-        // Combine all values and determine the worst case based on priority
-        return Stream.of(currentTechnologyValues, openSourceLicenseValues, predecessorTechnologyValues)
-                .flatMap(s -> s)
-                .min(Comparator.comparingInt(PRIORITY::indexOf))
-                .orElse("noRestrictionIdentified");
-    }
-
 const myArray = [1, 2, 3];
 const sum = myArray + 10;
 
