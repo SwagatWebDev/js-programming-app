@@ -19,13 +19,3 @@ Promise.race([
 }).catch((error) => {
     console.log('An error occurred', error);
 })
-
-if (!CollectionUtils.isEmpty(filterDto.getResources())) {
-    List<String> resourceTypes = filterDto.getResources();
-    filteredSolutionsList = filteredSolutionsList.stream()
-        .filter(solution -> solution.getResources() != null &&
-                solution.getResources().values().stream()
-                    .flatMap(List::stream)
-                    .anyMatch(resource -> resourceTypes.contains(resource.getResourceType())))
-        .collect(Collectors.toList());
-}
