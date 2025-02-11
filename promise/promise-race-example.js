@@ -20,3 +20,13 @@ Promise.race([
     console.log('An error occurred', error);
 })
 
+if (!CollectionUtils.isEmpty(filterDto.getProviders())) {
+    filteredSolutionsList = filteredSolutionsList.stream()
+        .filter(solution -> solution.getProviderFullName() != null &&
+            filterDto.getProviders().stream()
+                .map(String::toUpperCase)
+                .anyMatch(provider -> provider.equals(solution.getProviderFullName().toUpperCase())))
+        .collect(Collectors.toList());
+}
+
+
