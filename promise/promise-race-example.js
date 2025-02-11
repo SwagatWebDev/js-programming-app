@@ -19,4 +19,15 @@ Promise.race([
 }).catch((error) => {
     console.log('An error occurred', error);
 })
+if (!CollectionUtils.isEmpty(filterDto.getUsageDispositions())) {
+    List<UsageDisposition> usageDispositions = filterDto.getUsageDispositions();
+    filteredSolutionsList = filteredSolutionsList.stream()
+        .filter(solution -> 
+            EnumUtils.isValidEnum(UsageDisposition.class, solution.getUsageDisposition()) &&
+            usageDispositions.contains(UsageDisposition.valueOf(solution.getUsageDisposition()))
+        )
+        .collect(Collectors.toList());
+}
+
+
 
